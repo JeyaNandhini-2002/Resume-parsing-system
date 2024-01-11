@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RANK LIST</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: green;
+        }
+        table {
+            width: 70%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 2px solid #333;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        form {
+            display: inline-block; /* Display the form as an inline block */
+            text-align: left; /* Left align the content within the form */
+            padding: 20px; /* Add some padding for spacing */
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 30%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>RANK LIST</h1>
+    <table border="1">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for email, rank in data.items() %}
+            <tr>
+                <td>{{ email }}</td>
+                <td>{{ rank }}</td>
+            </tr>
+             <!-- Increment serial number -->
+        {% endfor %}
+    </tbody>
+</table>
+       <canvas id="rankChart" width="50" height="10"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = Object.keys({{ data | tojson }});
+        const dataValues = Object.values({{ data | tojson }}).map(scores => scores.length - 1); // Adjusted to count skills
+
+        const ctx = document.getElementById('rankChart').getContext('2d');
+        const rankChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Candidate Skills',
+                    data: dataValues,
+                    backgroundColor: 'green',
+                    borderColor: 'green',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        stepSize: 1 // Ensure the x-axis displays integers
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide the legend
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: (tooltipItem) => {
+                                return labels[tooltipItem[0].index]; // Display email as tooltip title
+                            },
+                            label: (tooltipItem) => {
+                                const index = tooltipItem.dataIndex;
+                                const skills = Object.values({{ data | tojson }})[index];
+                                return 'Skills: ' + skills.slice(0, -1).join(', '); // Display skills as tooltip label
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                },
+                indexAxis: 'x', // Vertical bars
+                barPercentage: 0.2 // Adjust this value to control the bar width
+            }
+        });
+    </script>
+    <form action="/send" method="POST">
+        <label for="range1">ENTER RANK RANGE</label>
+        <input type="text" id="range1" name="range1" value="1">
+
+        <button type="submit">SEND MAIL</button>
+    </form>
+
+</body>
+</html>

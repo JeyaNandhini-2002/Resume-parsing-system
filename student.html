@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            background-image:url('static/images1/c3.jpg');
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .rules {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .rules ol {
+            margin: 0;
+            padding: 0;
+        }
+
+        .rules li {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .container h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <h1>RESUME PARSING SYSTEM</h1>
+    <div class="rules">
+        <h1 style="color:red">Instructions</h1>
+        <ol>
+            <li>Resume should be in pdf format</li>
+            <li>Upload the resume in the template given below</li>
+            <li>The name of the file should be your mail ID</li>
+        </ol>
+    </div>
+          <h1>Upload Your Resume</h1>
+
+    <form action="/upload1" method="POST" enctype="multipart/form-data">
+        <label for="file">Select a file:</label>
+        <input type="file" id="file" name="file" accept=".pdf, .doc, .docx">
+        <input type="submit" value="Upload">
+    </form>
+    <a href="static\images\2012059@nec.edu.in.pdf" download="SampleResume.pdf">Download Sample Resume</a>
+  </div>
+</body>
+</html>

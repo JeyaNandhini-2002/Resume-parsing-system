@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-image: url('static/images1/c3.jpg');
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s;
+        }
+
+        .container {
+            width: 400px;
+            border: 5px solid black;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+
+        .container:hover {
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            background-color: #e8e8e8;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #555;
+            transition: color 0.3s;
+        }
+
+        label:hover {
+            color: #007bff;
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input[type="file"]:hover {
+            border-color: #007bff;
+        }
+
+        select, input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        select:hover, input[type="text"]:hover {
+            border-color: #007bff;
+        }
+
+        select option {
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+       <h1>Resume Parsing System</h1>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="file">Select a folder:</label>
+            <input type="file" id="fileInput" webkitdirectory directory multiple name="file">
+
+            <label for="filter">Select a filter:</label>
+            <select id="down" name="filter">
+                <option value="skills">Skills</option>
+                <option value="certifications">Achievements and Certificates</option>
+                <option value="area of interest">Area of interest</option>
+                <option value="projects">Projects</option>
+                <option value="internships and trainings">Intership</option>
+            </select>
+
+            <label for="skills">Enter skills:</label>
+            <input type="text" id="skills" name="skills">
+
+            <input type="submit" value="Upload Resumes">
+        </form>
+    </div>
+
+    <script>
+        function uploadFolder() {
+            const files = document.getElementById('fileInput').files;
+            const formData = new FormData();
+
+            for (const file of files) {
+                formData.append('file', file);
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload-folder', true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log('Folder uploaded successfully.');
+                } else {
+                    console.error('Folder upload failed.');
+                }
+            };
+
+            xhr.send(formData);
+        }
+    </script>
+</body>
+</html>
